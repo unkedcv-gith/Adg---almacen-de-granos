@@ -4,8 +4,7 @@
  */
 
 import { Facebook, Instagram, Linkedin, ArrowUp } from 'lucide-react';
-// @ts-ignore
-import logoFooter from '../assets/images/logo_footer_ok.png';
+import Logo from './Logo';
 
 export default function Footer() {
   const handleScrollToTop = () => {
@@ -25,11 +24,7 @@ export default function Footer() {
           {/* Col 1: Brand presentation (5 cols) */}
           <div className="md:col-span-5 space-y-5">
             <div className="flex items-center">
-              <img
-                src={logoFooter}
-                alt="ADG Almacén de Granos S.A."
-                className="h-16 w-auto object-contain rounded-lg"
-              />
+              <Logo lightBg={false} height={64} />
             </div>
 
             <p className="text-gray-300 text-sm max-w-sm leading-relaxed">

@@ -5,7 +5,9 @@
 
 import React from 'react';
 // @ts-ignore
-import logoImage from '../assets/images/logo_completo_color.png';
+import logoImageColor from '../assets/images/logo_completo_color.png';
+// @ts-ignore
+import logoImageWhite from '../assets/images/LOGO COMPLETO BLANCO.png';
 
 interface LogoProps {
   /**
@@ -35,15 +37,14 @@ export default function Logo({
   height = 40,
   iconOnly = false,
 }: LogoProps) {
-  // Apply a clean white filter to the PNG logo on dark backgrounds (like the footer)
-  const filterClass = !lightBg ? 'brightness-0 invert' : '';
+  const logoSrc = lightBg ? logoImageColor : logoImageWhite;
 
   return (
     <div className={`inline-flex items-center ${className}`} style={{ height }}>
       <img
-        src={logoImage}
+        src={logoSrc}
         alt="ADG Almacén de Granos S.A."
-        className={`object-contain h-full w-auto transition-all ${filterClass}`}
+        className="object-contain h-full w-auto transition-all"
         style={{ maxHeight: height }}
       />
     </div>
