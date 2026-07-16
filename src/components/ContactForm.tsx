@@ -37,7 +37,7 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       setSubmitStatus('error');
@@ -45,9 +45,32 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
     }
 
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    // Simulate submission delay
-    setTimeout(() => {
+    try {
+      // Send real email via FormSubmit AJAX to unkedcv@gmail.com
+      const response = await fetch('https://formsubmit.co/ajax/unkedcv@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          Nombre: formData.name,
+          Email: formData.email,
+          'Teléfono / Celular': formData.phone || 'No especificado',
+          'Área de Consulta / Asunto': formData.subject,
+          Mensaje: formData.message,
+          _subject: 'Nuevo mensaje desde la web de ADG Almacén de Granos',
+          _captcha: 'false',
+          _template: 'table'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el formulario');
+      }
+
       const newMessage: ContactMessage = {
         id: `msg-${Date.now()}`,
         name: formData.name,
@@ -65,21 +88,6 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
       setIsSubmitting(false);
       setSubmitStatus('success');
 
-      // Draft real Mailto link as fallback to fulfill "Formulario conectado al correo institucional"
-      const mailtoSubject = encodeURIComponent(`ADG Consulta Web: ${formData.subject}`);
-      const mailtoBody = encodeURIComponent(
-        `Nombre: ${formData.name}\n` +
-        `Email: ${formData.email}\n` +
-        `Teléfono: ${formData.phone || 'No especificado'}\n` +
-        `Asunto: ${formData.subject}\n\n` +
-        `Mensaje:\n${formData.message}`
-      );
-      
-      const mailtoUrl = `mailto:contacto@adgsa.com.ar?subject=${mailtoSubject}&body=${mailtoBody}`;
-      
-      // Let the browser open the mail app to actually send the institutional email!
-      window.location.href = mailtoUrl;
-
       // Reset form
       setFormData({
         name: '',
@@ -88,7 +96,11 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
         subject: 'Acopio de Granos',
         message: ''
       });
-    }, 1200);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+    }
   };
 
   return (
@@ -199,9 +211,9 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
                 <div className="mb-6 p-4 bg-brand-green-pale border border-brand-green/20 rounded-2xl flex items-start space-x-3 text-brand-green">
                   <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-bold">¡Mensaje registrado con éxito!</p>
+                    <p className="font-bold">¡Mensaje enviado con éxito!</p>
                     <p className="text-xs text-gray-600 mt-1">
-                      Hemos registrado su consulta en el sistema y se ha redactado un correo para enviar a <strong>contacto@adgsa.com.ar</strong> desde su cliente de correo.
+                      Hemos recibido su consulta correctamente. Nos pondremos en contacto con usted a la brevedad.
                     </p>
                     <button
                       onClick={() => setSubmitStatus('idle')}

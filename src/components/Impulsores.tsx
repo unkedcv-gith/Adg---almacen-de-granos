@@ -4,7 +4,7 @@
  */
 
 import { IMPULSORES_CONTENT } from '../data/content';
-import { Plus, MoveRight } from 'lucide-react';
+import { Plus, MoveRight, Quote } from 'lucide-react';
 // @ts-ignore
 import logoCircular from '../assets/images/LOGO CIRCULAR COLOR.png';
 
@@ -122,10 +122,18 @@ export default function Impulsores() {
         </div>
 
         {/* Informative text below */}
-        <div className="mt-16 text-center max-w-2xl mx-auto border-t border-gray-100 pt-8">
-          <p className="text-xs text-gray-400 italic">
+        <div className="mt-20 text-center max-w-3xl mx-auto border-t border-gray-100 pt-12 relative">
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
+            <Quote className="w-8 h-8 text-brand-gold/40" />
+          </div>
+          <blockquote className="font-display text-xl sm:text-2xl text-brand-green-dark font-medium leading-relaxed italic tracking-tight">
             "Combinamos décadas de trayectoria con la agilidad y las herramientas del campo moderno, garantizando cercanía en cada negocio."
-          </p>
+          </blockquote>
+          <div className="mt-5 flex items-center justify-center space-x-2">
+            <span className="h-px w-6 bg-brand-gold/50" />
+            <span className="text-xs font-bold text-brand-gold uppercase tracking-widest">Nuestra Promesa</span>
+            <span className="h-px w-6 bg-brand-gold/50" />
+          </div>
         </div>
 
       </div>
