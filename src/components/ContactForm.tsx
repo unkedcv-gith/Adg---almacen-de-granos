@@ -83,8 +83,8 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
         status: 'new'
       };
 
-      // Persist the message in parent state
-      onMessageSubmitted(newMessage);
+      // Persist the message in parent state if handler is provided
+      onMessageSubmitted?.(newMessage);
 
       setIsSubmitting(false);
       setSubmitStatus('success');
