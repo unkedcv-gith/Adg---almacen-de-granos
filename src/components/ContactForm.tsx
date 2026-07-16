@@ -9,7 +9,7 @@ import { LOCATION_CONTENT } from '../data/content';
 import { ContactMessage } from '../types';
 
 interface ContactFormProps {
-  onMessageSubmitted: (message: ContactMessage) => void;
+  onMessageSubmitted?: (message: ContactMessage) => void;
 }
 
 export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
