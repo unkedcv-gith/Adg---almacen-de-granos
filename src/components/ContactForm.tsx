@@ -56,6 +56,7 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
+          name: 'ADG Web',
           Nombre: formData.name,
           Email: formData.email,
           'Teléfono / Celular': formData.phone || 'No especificado',
