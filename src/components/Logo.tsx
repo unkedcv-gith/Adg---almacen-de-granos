@@ -7,7 +7,7 @@ import React from 'react';
 // @ts-ignore
 import logoImageColor from '../assets/images/logo_completo_color.png';
 // @ts-ignore
-import logoImageWhite from '../assets/images/LOGO COMPLETO BLANCO.png';
+import logoImageWhite from '../assets/images/logo_completo_blanco.png';
 
 interface LogoProps {
   /**

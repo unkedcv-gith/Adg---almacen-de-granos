@@ -6,13 +6,13 @@
 import { IMPULSORES_CONTENT } from '../data/content';
 import { Plus, MoveRight, Quote } from 'lucide-react';
 // @ts-ignore
-import logoCircular from '../assets/images/LOGO CIRCULAR COLOR.png';
+import logoCircular from '../assets/images/logo_circular_color.png';
 // @ts-ignore
 import logoTattersall from '../assets/images/logo_Tattersall.png';
 // @ts-ignore
 import logoPgl from '../assets/images/pgllogoweb.png';
 // @ts-ignore
-import logoCompletoBlanco from '../assets/images/LOGO COMPLETO BLANCO.png';
+import logoCompletoBlanco from '../assets/images/logo_completo_blanco.png';
 
 export default function Impulsores() {
   return (
