@@ -32,6 +32,24 @@ const getBasePath = () => {
   return '';
 };
 
+// Converts any relative or imported path into a fully qualified absolute URL prefixed with the base path
+const getAbsoluteUrl = (pathStr: string) => {
+  if (!pathStr) return '';
+  if (pathStr.startsWith('http://') || pathStr.startsWith('https://') || pathStr.startsWith('data:')) {
+    return pathStr;
+  }
+  const base = getBasePath();
+  
+  // If the path already starts with the base path, return it directly
+  if (base && pathStr.startsWith(base)) {
+    return pathStr;
+  }
+  
+  // Clean up any leading slash of the path to avoid double slashes
+  const cleanPath = pathStr.startsWith('/') ? pathStr.slice(1) : pathStr;
+  return base ? `${base}/${cleanPath}` : `/${cleanPath}`;
+};
+
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -50,6 +68,21 @@ export default function Hero() {
         console.warn("Video autoplay blocked or failed:", error);
       });
     }
+
+    // Attempt to play on any user interaction in case autoplay was blocked (e.g., iOS Low Power Mode)
+    const handleInteraction = () => {
+      if (video && video.paused) {
+        video.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
   }, []);
 
   const handleContactClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -99,9 +132,10 @@ export default function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-95"
         >
-          {videoSources.map((src, index) => (
-            <source key={`${src}-${index}`} src={src} type="video/mp4" />
-          ))}
+          {videoSources.map((src, index) => {
+            const absoluteSrc = getAbsoluteUrl(src);
+            return <source key={`${src}-${index}`} src={absoluteSrc} type="video/mp4" />;
+          })}
         </video>
 
         {/* Seamless vertical gradient from transparent at the top to white at the bottom */}
