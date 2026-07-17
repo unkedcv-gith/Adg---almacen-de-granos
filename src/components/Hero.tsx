@@ -11,7 +11,7 @@ import { ArrowRight } from 'lucide-react';
 // @ts-ignore
 import droneShot from '../assets/images/agricultural_silos_drone_shot_1784129623203.jpg';
 // @ts-ignore
-import heroVideo from '../assets/images/video.mp4';
+import heroVideo from '../assets/images/videook.mp4';
 
 // Helper to get the base path for relative-to-root assets like video.mp4 on subdirectory deploys
 const getBasePath = () => {
@@ -69,9 +69,12 @@ export default function Hero() {
   const basePath = getBasePath();
   const videoSources = [
     heroVideo, // Vite auto-resolves base paths for imported assets
+    basePath ? `${basePath}/videook.mp4` : '/videook.mp4',
     basePath ? `${basePath}/video.mp4` : '/video.mp4',
+    basePath ? `${basePath}/src/assets/images/videook.mp4` : '/src/assets/images/videook.mp4',
     basePath ? `${basePath}/src/assets/images/video.mp4` : '/src/assets/images/video.mp4',
-    'video.mp4' // raw relative path
+    'videook.mp4',
+    'video.mp4'
   ];
 
   return (
