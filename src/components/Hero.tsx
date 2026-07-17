@@ -55,8 +55,8 @@ export default function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-95"
         >
-          {VIDEO_SOURCES.map((src) => (
-            <source key={src} src={src} type="video/mp4" />
+          {VIDEO_SOURCES.map((src, index) => (
+            <source key={`${src}-${index}`} src={src} type="video/mp4" />
           ))}
         </video>
 
