@@ -38,7 +38,7 @@ export default function Impulsores() {
           {/* Card 1: Monasterio Tattersall (3 columns) */}
           <div className="lg:col-span-3 bg-gradient-to-b from-gray-50 to-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center h-full">
             {/* Custom MT Logo Emblem */}
-            <div className="w-full h-[140px] flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-full h-[140px] flex items-center justify-center mb-0 relative overflow-hidden">
               <img 
                 src={logoTattersall} 
                 alt="Monasterio Tattersall" 
@@ -47,15 +47,11 @@ export default function Impulsores() {
               />
             </div>
 
-            <h4 className="font-display min-h-[56px] flex flex-col justify-center mb-[11px] mt-[-18px]">
-              <span className="text-[20px] font-extrabold text-brand-green-dark leading-[28px] uppercase">MONASTERIO</span>
-              <span className="text-[17px] font-semibold text-gray-500 leading-none mt-1">Tattersall</span>
-            </h4>
             <div className="h-0.5 w-10 bg-brand-gold/40 rounded-full mb-4" />
-            <p className="text-xs text-gray-500 leading-relaxed">
+            <p className="text-xs text-gray-500 leading-relaxed mt-[3px]">
               {IMPULSORES_CONTENT.monasterio.detail}
             </p>
-            <div className="mt-4 inline-flex items-center space-x-1 text-[10px] font-semibold text-brand-green uppercase tracking-wider bg-brand-green-pale px-3 py-1 rounded-full">
+            <div className="mt-[27px] inline-flex items-center space-x-1 text-[10px] font-semibold text-brand-green uppercase tracking-wider bg-brand-green-pale px-3 py-1 rounded-full">
               <span>70+ Años de Confianza</span>
             </div>
           </div>
@@ -70,19 +66,15 @@ export default function Impulsores() {
           {/* Card 2: PGL – Productores General La Madrid (3 columns) */}
           <div className="lg:col-span-3 bg-gradient-to-b from-gray-50 to-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center h-full">
             {/* Custom PGL Logo Emblem */}
-            <div className="w-full h-[140px] flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-full h-[140px] flex items-center justify-center mb-0 relative overflow-hidden">
               <img 
                 src={logoPgl} 
                 alt="Productores General La Madrid" 
-                className="max-h-[95px] w-auto object-contain"
+                className="max-h-[95px] w-auto object-contain pb-0 mb-[14px]"
                 referrerPolicy="no-referrer"
               />
             </div>
 
-            <h4 className="font-display min-h-[56px] flex flex-col justify-center mb-[11px] mt-[-18px]">
-              <span className="text-[20px] font-extrabold text-brand-green-dark leading-[28px]">PGL</span>
-              <span className="text-[17px] font-semibold text-gray-500 leading-none mt-1">Productores Gral. La Madrid</span>
-            </h4>
             <div className="h-0.5 w-10 bg-brand-gold/40 rounded-full mb-4" />
             <p className="text-xs text-gray-500 leading-relaxed">
               {IMPULSORES_CONTENT.pgl.detail}
@@ -109,7 +101,7 @@ export default function Impulsores() {
             </div>
             
             {/* Brand Logo Emblem */}
-            <div className="w-full h-[140px] flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-full h-[140px] flex items-center justify-center mb-0 relative overflow-hidden">
               <img 
                 src={logoCompletoBlanco} 
                 alt="ADG Almacén de Granos S.A." 
@@ -118,12 +110,8 @@ export default function Impulsores() {
               />
             </div>
 
-            <h4 className="font-display min-h-[56px] flex flex-col justify-center mb-[11px] mt-[-18px]">
-              <span className="text-[20px] font-extrabold text-white leading-[28px] lowercase">adg</span>
-              <span className="text-[17px] font-semibold text-white leading-none mt-1 lowercase">almacen de granos s.a</span>
-            </h4>
             <div className="h-0.5 w-12 bg-brand-gold rounded-full mb-4" />
-            <p className="text-xs text-gray-200 leading-relaxed">
+            <p className="text-xs text-gray-200 leading-relaxed mt-[7px]">
               {IMPULSORES_CONTENT.adg.detail}
             </p>
             
