@@ -67,6 +67,7 @@ export default function Hero() {
   };
 
   const basePath = getBasePath();
+  // Multiple fallback sources to guarantee compatibility with subfolder deploys and newly uploaded files
   const videoSources = [
     heroVideo, // Vite auto-resolves base paths for imported assets
     basePath ? `${basePath}/videook.mp4` : '/videook.mp4',
