@@ -70,7 +70,7 @@ export default function Impulsores() {
               <img 
                 src={logoPgl} 
                 alt="Productores General La Madrid" 
-                className="max-h-[95px] w-auto object-contain pb-0 mb-[14px]"
+                className="max-h-[95px] w-auto object-contain pb-0 mb-[14px] mt-[-15px]"
                 referrerPolicy="no-referrer"
               />
             </div>
