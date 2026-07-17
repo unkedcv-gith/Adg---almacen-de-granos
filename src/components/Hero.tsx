@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { HERO_CONTENT } from '../data/content';
 import { ArrowRight } from 'lucide-react';
@@ -13,14 +13,45 @@ import droneShot from '../assets/images/agricultural_silos_drone_shot_1784129623
 // @ts-ignore
 import heroVideo from '../assets/images/video.mp4';
 
-// Robust string paths for the background video to prevent compilation errors if the file is excluded/deleted from Git
-const VIDEO_SOURCES = [
-  heroVideo,
-  '/video.mp4',
-  '/src/assets/images/video.mp4'
-];
+// Helper to get the base path for relative-to-root assets like video.mp4 on subdirectory deploys
+const getBasePath = () => {
+  if (typeof window === 'undefined') return '';
+  const pathname = window.location.pathname;
+  if (pathname.includes('/adgweb')) {
+    return '/adgweb';
+  }
+  // Generic sub-path detection (handles hosting under a subdirectory in github pages)
+  const segments = pathname.split('/').filter(Boolean);
+  if (segments.length > 0) {
+    const first = segments[0];
+    const knownRoutes = ['contacto', 'servicios', 'nosotros', 'infraestructura', 'why-us'];
+    if (!knownRoutes.includes(first) && !first.includes('.')) {
+      return `/${first}`;
+    }
+  }
+  return '';
+};
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Force muted on the element programmatically to guarantee autoplay rules are met
+    video.muted = true;
+    video.defaultMuted = true;
+    
+    // Explicitly call play to guarantee autoplay is triggered
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        console.warn("Video autoplay blocked or failed:", error);
+      });
+    }
+  }, []);
+
   const handleContactClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const element = document.getElementById('contacto');
@@ -34,6 +65,14 @@ export default function Hero() {
       });
     }
   };
+
+  const basePath = getBasePath();
+  const videoSources = [
+    heroVideo, // Vite auto-resolves base paths for imported assets
+    basePath ? `${basePath}/video.mp4` : '/video.mp4',
+    basePath ? `${basePath}/src/assets/images/video.mp4` : '/src/assets/images/video.mp4',
+    'video.mp4' // raw relative path
+  ];
 
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
@@ -49,13 +88,14 @@ export default function Hero() {
 
         {/* Ambient background video with multiple sources for maximum compatibility and robustness */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-95"
         >
-          {VIDEO_SOURCES.map((src, index) => (
+          {videoSources.map((src, index) => (
             <source key={`${src}-${index}`} src={src} type="video/mp4" />
           ))}
         </video>
