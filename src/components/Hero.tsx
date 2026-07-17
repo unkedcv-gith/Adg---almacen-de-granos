@@ -3,86 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { HERO_CONTENT } from '../data/content';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Lock } from 'lucide-react';
 
 // @ts-ignore
-import droneShot from '../assets/images/agricultural_silos_drone_shot_1784129623203.jpg';
-// @ts-ignore
-import heroVideo from '../assets/images/videook.mp4';
+import heroVideo from '../assets/images/video.mp4';
 
-// Helper to get the base path for relative-to-root assets like video.mp4 on subdirectory deploys
-const getBasePath = () => {
-  if (typeof window === 'undefined') return '';
-  const pathname = window.location.pathname;
-  if (pathname.includes('/adgweb')) {
-    return '/adgweb';
-  }
-  // Generic sub-path detection (handles hosting under a subdirectory in github pages)
-  const segments = pathname.split('/').filter(Boolean);
-  if (segments.length > 0) {
-    const first = segments[0];
-    const knownRoutes = ['contacto', 'servicios', 'nosotros', 'infraestructura', 'why-us'];
-    if (!knownRoutes.includes(first) && !first.includes('.')) {
-      return `/${first}`;
-    }
-  }
-  return '';
-};
-
-// Converts any relative or imported path into a fully qualified absolute URL prefixed with the base path
-const getAbsoluteUrl = (pathStr: string) => {
-  if (!pathStr) return '';
-  if (pathStr.startsWith('http://') || pathStr.startsWith('https://') || pathStr.startsWith('data:')) {
-    return pathStr;
-  }
-  const base = getBasePath();
-  
-  // If the path already starts with the base path, return it directly
-  if (base && pathStr.startsWith(base)) {
-    return pathStr;
-  }
-  
-  // Clean up any leading slash of the path to avoid double slashes
-  const cleanPath = pathStr.startsWith('/') ? pathStr.slice(1) : pathStr;
-  return base ? `${base}/${cleanPath}` : `/${cleanPath}`;
-};
+const BACKGROUND_VIDEOS = [
+  heroVideo
+];
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentVideo, setCurrentVideo] = useState(0);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Force muted on the element programmatically to guarantee autoplay rules are met
-    video.muted = true;
-    video.defaultMuted = true;
-    
-    // Explicitly call play to guarantee autoplay is triggered
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((error) => {
-        console.warn("Video autoplay blocked or failed:", error);
-      });
-    }
-
-    // Attempt to play on any user interaction in case autoplay was blocked (e.g., iOS Low Power Mode)
-    const handleInteraction = () => {
-      if (video && video.paused) {
-        video.play().catch(() => {});
-      }
-    };
-
-    window.addEventListener('click', handleInteraction);
-    window.addEventListener('touchstart', handleInteraction);
-
-    return () => {
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-    };
+    if (BACKGROUND_VIDEOS.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentVideo((prev) => (prev + 1) % BACKGROUND_VIDEOS.length);
+    }, 7000); // Change video every 7 seconds
+    return () => clearInterval(interval);
   }, []);
 
   const handleContactClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -99,44 +40,32 @@ export default function Hero() {
     }
   };
 
-  const basePath = getBasePath();
-  // Multiple fallback sources to guarantee compatibility with subfolder deploys and newly uploaded files
-  const videoSources = [
-    heroVideo, // Vite auto-resolves base paths for imported assets
-    basePath ? `${basePath}/videook.mp4` : '/videook.mp4',
-    basePath ? `${basePath}/video.mp4` : '/video.mp4',
-    basePath ? `${basePath}/src/assets/images/videook.mp4` : '/src/assets/images/videook.mp4',
-    basePath ? `${basePath}/src/assets/images/video.mp4` : '/src/assets/images/video.mp4',
-    'videook.mp4',
-    'video.mp4'
-  ];
-
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
       {/* Background Video Sequence with elegant white gradient overlay */}
       <div className="absolute inset-0 z-0 bg-white">
         {/* Fallback Static Image (rendered behind the video) */}
         <img
-          src={droneShot}
+          src="/src/assets/images/agricultural_silos_drone_shot_1784129623203.jpg"
           alt="Instalaciones de acopio ADG Almacén de Granos"
           className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
           referrerPolicy="no-referrer"
         />
 
-        {/* Ambient background video with multiple sources for maximum compatibility and robustness */}
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-95"
-        >
-          {videoSources.map((src, index) => {
-            const absoluteSrc = getAbsoluteUrl(src);
-            return <source key={`${src}-${index}`} src={absoluteSrc} type="video/mp4" />;
-          })}
-        </video>
+        {/* Multi-video layers for a smooth hardware-accelerated crossfade */}
+        {BACKGROUND_VIDEOS.map((src, index) => (
+          <video
+            key={src}
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1500 ease-in-out ${
+              index === currentVideo ? 'opacity-95' : 'opacity-0'
+            }`}
+          />
+        ))}
 
         {/* Seamless vertical gradient from transparent at the top to white at the bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/25 via-white/55 to-white/90 z-1" />
