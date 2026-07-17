@@ -37,14 +37,24 @@ export default function Logo({
   height = 40,
   iconOnly = false,
 }: LogoProps) {
-  const logoSrc = lightBg ? logoImageColor : logoImageWhite;
-
   return (
-    <div className={`inline-flex items-center ${className}`} style={{ height }}>
+    <div className={`inline-flex items-center relative ${className}`} style={{ height }}>
+      {/* Color Logo */}
       <img
-        src={logoSrc}
-        alt="ADG Almacén de Granos S.A."
-        className="object-contain h-full w-auto transition-all"
+        src={logoImageColor}
+        alt="ADG Almacén de Granos S.A. - Color"
+        className={`object-contain h-full w-auto transition-opacity duration-500 ease-in-out ${
+          lightBg ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        style={{ maxHeight: height }}
+      />
+      {/* White Logo */}
+      <img
+        src={logoImageWhite}
+        alt="ADG Almacén de Granos S.A. - Blanco"
+        className={`object-contain h-full w-auto absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
+          lightBg ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
         style={{ maxHeight: height }}
       />
     </div>

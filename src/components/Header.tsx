@@ -19,7 +19,7 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
 
       // Simple active link tracker on scroll
       const sections = ['inicio', 'quienes-somos', 'servicios', 'infraestructura', 'ubicacion', 'contacto', 'acceso-clientes'];
@@ -71,9 +71,9 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
   return (
     <header
       id="main-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled
-          ? 'bg-white/95 shadow-md py-4 border-b border-gray-100 backdrop-blur-md'
+          ? 'bg-brand-green-dark shadow-md py-4 border-b border-brand-green/10'
           : 'bg-white/90 shadow-sm py-5 border-b border-gray-100/50 backdrop-blur-md'
       }`}
     >
@@ -87,7 +87,7 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
             onClick={(e) => handleNavClick(e, '#inicio')}
             className="flex items-center group"
           >
-            <Logo lightBg={true} height={56} />
+            <Logo lightBg={!isScrolled} height={56} />
           </a>
 
           {/* Desktop Navigation */}
@@ -100,10 +100,14 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
                   id={`nav-${item.id}`}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`text-sm font-semibold px-4 py-2.5 rounded-full transition-all duration-300 ease-in-out hover:scale-[1.04] active:scale-95 ${
-                    isActive
-                      ? 'text-brand-green bg-brand-green-pale/90 shadow-[0_3px_12px_-4px_rgba(4,69,36,0.18)] border border-brand-green/10'
-                      : 'text-gray-600 font-medium hover:bg-brand-green-pale/50 hover:text-brand-green'
+                  className={`text-sm font-semibold px-4 py-2.5 rounded-full transition-all duration-500 ease-in-out hover:scale-[1.04] active:scale-95 ${
+                    isScrolled
+                      ? isActive
+                        ? 'text-white bg-white/15 shadow-[0_3px_12px_-4px_rgba(255,255,255,0.15)] border border-white/20'
+                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                      : isActive
+                        ? 'text-brand-green bg-brand-green-pale/90 shadow-[0_3px_12px_-4px_rgba(4,69,36,0.18)] border border-brand-green/10'
+                        : 'text-gray-600 hover:bg-brand-green-pale/50 hover:text-brand-green'
                   }`}
                 >
                   {item.label}
@@ -116,10 +120,14 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
               id="header-client-access-btn"
               href="#acceso-clientes"
               onClick={(e) => handleNavClick(e, '#acceso-clientes')}
-              className={`flex items-center space-x-1.5 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ease-in-out border hover:scale-105 active:scale-95 hover:shadow-md ${
-                activeSection === 'acceso-clientes'
-                  ? 'bg-brand-green text-white border-brand-green shadow-sm'
-                  : 'bg-white text-brand-green border-brand-green/30 hover:border-brand-green hover:bg-brand-green/5'
+              className={`flex items-center space-x-1.5 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 ease-in-out border hover:scale-105 active:scale-95 hover:shadow-md ${
+                isScrolled
+                  ? activeSection === 'acceso-clientes'
+                    ? 'bg-white text-brand-green-dark border-white shadow-sm'
+                    : 'bg-transparent text-white border-white/30 hover:border-white hover:bg-white/10'
+                  : activeSection === 'acceso-clientes'
+                    ? 'bg-brand-green text-white border-brand-green shadow-sm'
+                    : 'bg-white text-brand-green border-brand-green/30 hover:border-brand-green hover:bg-brand-green/5'
               }`}
             >
               <Lock className="w-3.5 h-3.5" />
@@ -132,7 +140,11 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
             <button
               id="mobile-menu-btn"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-gray-600 hover:text-brand-green focus:outline-none"
+              className={`p-2 focus:outline-none transition-colors ${
+                isScrolled
+                  ? 'text-white hover:text-brand-gold-light'
+                  : 'text-gray-600 hover:text-brand-green'
+              }`}
               aria-label="Abrir menú"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -144,7 +156,14 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
 
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div id="mobile-drawer" className="lg:hidden bg-white border-t border-gray-100 py-4 px-6 shadow-xl animate-in fade-in slide-in-from-top duration-200">
+        <div
+          id="mobile-drawer"
+          className={`lg:hidden border-t py-4 px-6 shadow-xl animate-in fade-in slide-in-from-top duration-200 ${
+            isScrolled
+              ? 'bg-brand-green-dark border-brand-green/20'
+              : 'bg-white border-gray-100'
+          }`}
+        >
           <div className="flex flex-col space-y-4">
             {navItems.map((item) => (
               <a
@@ -153,7 +172,13 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
                 className={`text-base font-medium py-1.5 transition-colors ${
-                  activeSection === item.id ? 'text-brand-green font-bold pl-2 border-l-2 border-brand-green' : 'text-gray-600'
+                  isScrolled
+                    ? activeSection === item.id
+                      ? 'text-brand-gold-light font-bold pl-2 border-l-2 border-brand-gold-light'
+                      : 'text-white/80 hover:text-white'
+                    : activeSection === item.id
+                      ? 'text-brand-green font-bold pl-2 border-l-2 border-brand-green'
+                      : 'text-gray-600 hover:text-brand-green'
                 }`}
               >
                 {item.label}
@@ -164,9 +189,13 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
               href="#acceso-clientes"
               onClick={(e) => handleNavClick(e, '#acceso-clientes')}
               className={`flex items-center justify-center space-x-2 w-full py-2.5 px-4 rounded-lg text-sm font-semibold uppercase tracking-wider transition-all border ${
-                activeSection === 'acceso-clientes'
-                  ? 'bg-brand-green text-white border-brand-green'
-                  : 'bg-brand-green-pale text-brand-green border-brand-green/20'
+                isScrolled
+                  ? activeSection === 'acceso-clientes'
+                    ? 'bg-brand-gold text-white border-brand-gold'
+                    : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                  : activeSection === 'acceso-clientes'
+                    ? 'bg-brand-green text-white border-brand-green'
+                    : 'bg-brand-green-pale text-brand-green border-brand-green/20'
               }`}
             >
               <Lock className="w-4 h-4" />
