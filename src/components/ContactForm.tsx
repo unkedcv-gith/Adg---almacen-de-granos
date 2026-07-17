@@ -184,8 +184,8 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Correo Electrónico</h4>
-                      <a href="mailto:contacto@adgsa.com.ar" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
-                        contacto@adgsa.com.ar
+                      <a href="mailto:contacto@almacendegranos.com.ar" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
+                        contacto@almacendegranos.com.ar
                       </a>
                     </div>
                   </div>
