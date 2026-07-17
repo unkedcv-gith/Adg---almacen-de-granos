@@ -122,77 +122,79 @@ export default function ContactForm({ onMessageSubmitted }: ContactFormProps) {
         </div>
 
         {/* Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start lg:items-stretch">
           
           {/* Left Column: Institutional info (5 cols) */}
-          <div className="lg:col-span-5 space-y-8">
-            <div className="bg-brand-green-pale border border-brand-green/10 rounded-3xl p-8 lg:p-10 space-y-8">
+          <div className="lg:col-span-5 lg:h-full">
+            <div className="bg-brand-green-pale border border-brand-green/10 rounded-3xl p-8 lg:p-10 lg:h-full flex flex-col justify-between">
               
-              <h3 className="font-display font-bold text-xl text-brand-green-dark">
-                Canales de Contacto
-              </h3>
+              <div className="flex flex-col flex-grow">
+                <h3 className="font-display font-bold text-xl text-brand-green-dark">
+                  Canales de Contacto
+                </h3>
 
-              <div className="space-y-6">
-                
-                {/* Dirección */}
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
-                    <MapPin className="w-5 h-5" />
+                <div className="mt-8 flex-grow flex flex-col justify-between space-y-6 lg:space-y-0 lg:py-4">
+                  
+                  {/* Dirección */}
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Dirección</h4>
+                      <p className="text-gray-800 text-sm font-semibold mt-1">{LOCATION_CONTENT.address}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Dirección</h4>
-                    <p className="text-gray-800 text-sm font-semibold mt-1">{LOCATION_CONTENT.address}</p>
+
+                  {/* Teléfono */}
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Teléfono Central</h4>
+                      <a href="tel:2314405179" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
+                        {LOCATION_CONTENT.phones.cereales}
+                      </a>
+                    </div>
                   </div>
+
+                  {/* WhatsApp */}
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">WhatsApp Directo</h4>
+                      <a
+                        href="https://wa.me/5492314405179"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-brand-green hover:text-brand-green-light text-sm font-bold mt-1 block"
+                      >
+                        +54 9 2314 405179
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Correo */}
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Correo Electrónico</h4>
+                      <a href="mailto:contacto@adgsa.com.ar" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
+                        contacto@adgsa.com.ar
+                      </a>
+                    </div>
+                  </div>
+
                 </div>
-
-                {/* Teléfono */}
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Teléfono Central</h4>
-                    <a href="tel:2314405179" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
-                      {LOCATION_CONTENT.phones.cereales}
-                    </a>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
-                    <MessageSquare className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">WhatsApp Directo</h4>
-                    <a
-                      href="https://wa.me/5492314405179"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-brand-green hover:text-brand-green-light text-sm font-bold mt-1 block"
-                    >
-                      +54 9 2314 405179
-                    </a>
-                  </div>
-                </div>
-
-                {/* Correo */}
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-2.5 bg-white text-brand-green border border-brand-green/10 rounded-xl">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Correo Electrónico</h4>
-                    <a href="mailto:contacto@adgsa.com.ar" className="text-gray-800 hover:text-brand-green text-sm font-semibold mt-1 block">
-                      contacto@adgsa.com.ar
-                    </a>
-                  </div>
-                </div>
-
               </div>
 
               {/* Legal Notice */}
-              <div className="pt-6 border-t border-brand-green/10 text-xs text-gray-500 leading-relaxed">
+              <div className="pt-6 mt-8 border-t border-brand-green/10 text-xs text-gray-500 leading-relaxed">
                 Su consulta será enviada directamente al departamento correspondiente (Cereales, Logística, Insumos o Administración) para brindarle una respuesta dentro de las primeras 24 horas hábiles.
               </div>
 

@@ -40,20 +40,6 @@ export default function Hero() {
     }
   };
 
-  const handleClientClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const element = document.getElementById('acceso-clientes');
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
       {/* Background Video Sequence with elegant white gradient overlay */}
@@ -131,22 +117,14 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4"
+            className="flex flex-col sm:flex-row items-center sm:items-center space-y-4 sm:space-y-0 sm:space-x-4"
           >
             <button
               onClick={handleContactClick}
-              className="flex items-center justify-center space-x-2 bg-brand-green hover:bg-brand-green-light text-white font-bold text-sm uppercase tracking-wider py-4 px-8 rounded-full transition-all hover:scale-102 hover:shadow-lg focus:outline-none shadow-md"
+              className="flex items-center justify-center space-x-2 bg-brand-green hover:bg-brand-green-light text-white font-bold text-sm uppercase tracking-wider py-4 px-8 rounded-full transition-all hover:scale-102 hover:shadow-lg focus:outline-none shadow-md w-full sm:w-auto"
             >
               <span>{HERO_CONTENT.ctaPrimary}</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={handleClientClick}
-              className="flex items-center justify-center space-x-2 bg-white hover:bg-gray-100 text-brand-green-dark font-bold text-sm uppercase tracking-wider py-4 px-8 rounded-full border border-gray-200 transition-all hover:scale-102 hover:shadow-md focus:outline-none shadow-sm"
-            >
-              <Lock className="w-4 h-4 text-brand-gold" />
-              <span>{HERO_CONTENT.ctaSecondary}</span>
             </button>
           </motion.div>
         </div>
