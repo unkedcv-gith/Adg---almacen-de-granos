@@ -3,29 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { HERO_CONTENT } from '../data/content';
-import { ArrowRight, Lock } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
+// @ts-ignore
+import droneShot from '../assets/images/agricultural_silos_drone_shot_1784129623203.jpg';
 // @ts-ignore
 import heroVideo from '../assets/images/video.mp4';
 
-const BACKGROUND_VIDEOS = [
-  heroVideo
+// Robust string paths for the background video to prevent compilation errors if the file is excluded/deleted from Git
+const VIDEO_SOURCES = [
+  heroVideo,
+  '/video.mp4',
+  '/src/assets/images/video.mp4'
 ];
 
 export default function Hero() {
-  const [currentVideo, setCurrentVideo] = useState(0);
-
-  useEffect(() => {
-    if (BACKGROUND_VIDEOS.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentVideo((prev) => (prev + 1) % BACKGROUND_VIDEOS.length);
-    }, 7000); // Change video every 7 seconds
-    return () => clearInterval(interval);
-  }, []);
-
   const handleContactClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const element = document.getElementById('contacto');
@@ -46,26 +41,24 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 bg-white">
         {/* Fallback Static Image (rendered behind the video) */}
         <img
-          src="/src/assets/images/agricultural_silos_drone_shot_1784129623203.jpg"
+          src={droneShot}
           alt="Instalaciones de acopio ADG Almacén de Granos"
           className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
           referrerPolicy="no-referrer"
         />
 
-        {/* Multi-video layers for a smooth hardware-accelerated crossfade */}
-        {BACKGROUND_VIDEOS.map((src, index) => (
-          <video
-            key={src}
-            src={src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1500 ease-in-out ${
-              index === currentVideo ? 'opacity-95' : 'opacity-0'
-            }`}
-          />
-        ))}
+        {/* Ambient background video with multiple sources for maximum compatibility and robustness */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-95"
+        >
+          {VIDEO_SOURCES.map((src) => (
+            <source key={src} src={src} type="video/mp4" />
+          ))}
+        </video>
 
         {/* Seamless vertical gradient from transparent at the top to white at the bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/25 via-white/55 to-white/90 z-1" />
