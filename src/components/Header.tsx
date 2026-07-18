@@ -131,7 +131,7 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
               }`}
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>Acceso Clientes</span>
+              <span>Clientes</span>
             </a>
           </nav>
 
@@ -199,7 +199,7 @@ export default function Header({ onOpenInbox, unreadCount = 0 }: HeaderProps) {
               }`}
             >
               <Lock className="w-4 h-4" />
-              <span>Acceso Clientes</span>
+              <span>Clientes</span>
             </a>
           </div>
         </div>

@@ -22,6 +22,7 @@ import ClientAccess from './components/ClientAccess';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import RainWidget from './components/RainWidget';
 
 export default function App() {
   return (
@@ -70,6 +71,7 @@ export default function App() {
 
       {/* Floating Channels */}
       <WhatsAppButton />
+      <RainWidget />
 
     </div>
   );
