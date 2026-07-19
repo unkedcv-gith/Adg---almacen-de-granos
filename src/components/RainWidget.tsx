@@ -31,7 +31,6 @@ interface MeteorologicalData {
 
 export default function RainWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(true);
   
   // Real-time weather/rain state
   const [weatherData, setWeatherData] = useState<MeteorologicalData>({
@@ -45,14 +44,6 @@ export default function RainWidget() {
     loading: true,
     error: false,
   });
-
-  // Close tooltip after 10 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowTooltip(false);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Fetch meteorological data from Open-Meteo for Daireaux via local server proxy
   useEffect(() => {
@@ -175,57 +166,43 @@ export default function RainWidget() {
   const weather = getWeatherDesc(weatherData.weatherCode);
 
   return (
-    <div id="rain-widget-container" className="fixed bottom-4 left-4 md:bottom-auto md:left-auto md:top-28 md:right-6 z-40 font-sans">
+    <div id="rain-widget-container" className="fixed top-28 right-4 md:top-32 md:right-6 z-40 font-sans">
       
-      {/* Subtle floating tooltip */}
-      <AnimatePresence>
-        {showTooltip && !isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            className="absolute left-16 bottom-2 md:left-auto md:bottom-auto md:right-full md:mr-3.5 md:top-1/2 md:-translate-y-1/2 bg-brand-green text-white py-2 px-3.5 rounded-xl shadow-lg text-xs font-semibold whitespace-nowrap z-10 border border-brand-green-light flex items-center space-x-2"
-          >
-            <span className="flex h-2 w-2 rounded-full bg-brand-gold animate-pulse" />
-            <span>📊 Registro de Lluvias - Daireaux</span>
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowTooltip(false);
-              }}
-              className="hover:text-brand-gold ml-1.5 transition-colors focus:outline-none"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Main floating trigger capsule */}
       {!isOpen && (
         <button
           onClick={() => {
             setIsOpen(true);
-            setShowTooltip(false);
           }}
-          className="flex items-center space-x-2.5 bg-white hover:bg-brand-green-pale border border-gray-100 hover:border-brand-green/20 py-2.5 px-4 rounded-full shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] hover:shadow-md transition-all duration-300 hover:scale-[1.03] text-gray-800 focus:outline-none group relative overflow-hidden"
+          className="flex items-center bg-white hover:bg-brand-green-pale border border-gray-100 hover:border-brand-green/20 p-1.5 md:py-2.5 md:px-4 rounded-full shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] hover:shadow-md transition-all duration-300 hover:scale-[1.03] text-gray-800 focus:outline-none group relative overflow-hidden"
           title="Ver registro de lluvia en Daireaux"
         >
           <div className="absolute inset-0 bg-brand-green/3 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-brand-green-pale text-brand-green">
-            <CloudRain className="w-4.5 h-4.5 animate-bounce" style={{ animationDuration: '3s' }} />
+          
+          {/* Mobile compact: icon + mm only */}
+          <div className="flex md:hidden items-center space-x-1 px-1.5 py-0.5">
+            <CloudRain className="w-4.5 h-4.5 text-brand-green animate-bounce" style={{ animationDuration: '3s' }} />
+            <span className="text-xs font-extrabold text-brand-gold">
+              {weatherData.precipToday > 0 ? `${weatherData.precipToday} mm` : '0 mm'}
+            </span>
           </div>
-          <div className="text-left">
-            <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold leading-tight">Pluviómetro</p>
-            <p className="text-xs font-bold text-brand-green flex items-center space-x-1">
-              <span>Daireaux:</span>
-              <span className="text-brand-gold font-extrabold">
-                {weatherData.precipToday > 0 ? `${weatherData.precipToday} mm` : '0 mm'}
-              </span>
-            </p>
+
+          {/* Desktop: complete detailed capsule */}
+          <div className="hidden md:flex items-center space-x-2.5">
+            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-brand-green-pale text-brand-green">
+              <CloudRain className="w-4.5 h-4.5 animate-bounce" style={{ animationDuration: '3s' }} />
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold leading-tight">Pluviómetro</p>
+              <p className="text-xs font-bold text-brand-green flex items-center space-x-1">
+                <span>Daireaux:</span>
+                <span className="text-brand-gold font-extrabold">
+                  {weatherData.precipToday > 0 ? `${weatherData.precipToday} mm` : '0 mm'}
+                </span>
+              </p>
+            </div>
+            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-brand-green transition-transform group-hover:translate-y-0.5 duration-300 ml-1" />
           </div>
-          <ChevronUp className="w-4 h-4 md:hidden text-gray-400 group-hover:text-brand-green transition-transform group-hover:-translate-y-0.5 duration-300 ml-1" />
-          <ChevronDown className="w-4 h-4 hidden md:block text-gray-400 group-hover:text-brand-green transition-transform group-hover:translate-y-0.5 duration-300 ml-1" />
         </button>
       )}
 
