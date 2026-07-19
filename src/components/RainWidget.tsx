@@ -51,10 +51,17 @@ export default function RainWidget() {
       try {
         setWeatherData(prev => ({ ...prev, loading: true, error: false }));
         
-        // Fetch from our server-side proxy to bypass client/iframe network restrictions
-        const url = `/api/weather`;
+        // Fetch from our server-side proxy to bypass client/iframe network restrictions, with a direct client-side fallback if hosted statically
+        let response;
+        try {
+          response = await fetch(`/api/weather`);
+          if (!response.ok) throw new Error('Local API failed');
+        } catch (apiErr) {
+          console.warn('Backend proxy not available (/api/weather). Fetching directly from Open-Meteo API...', apiErr);
+          const directUrl = `https://api.open-meteo.com/v1/forecast?latitude=-36.602&longitude=-61.263&current=temperature_2m,relative_humidity_2m,precipitation,rain,weather_code&daily=precipitation_sum&timezone=America/Argentina/Buenos_Aires&past_days=7`;
+          response = await fetch(directUrl);
+        }
         
-        const response = await fetch(url);
         if (!response.ok) throw new Error('API request failed');
         const data = await response.json();
 
